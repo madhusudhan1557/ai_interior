@@ -1,0 +1,16 @@
+# This is a generated file; do not edit or check into version control.
+ar_flutter_plugin=/home/madhu/.pub-cache/hosted/pub.dartlang.org/ar_flutter_plugin-0.7.1/
+camera=/home/madhu/.pub-cache/hosted/pub.dartlang.org/camera-0.10.0+1/
+camera_android=/home/madhu/.pub-cache/hosted/pub.dartlang.org/camera_android-0.10.0+2/
+camera_avfoundation=/home/madhu/.pub-cache/hosted/pub.dartlang.org/camera_avfoundation-0.9.8+5/
+camera_web=/home/madhu/.pub-cache/hosted/pub.dartlang.org/camera_web-0.3.0/
+flutter_plugin_android_lifecycle=/home/madhu/.pub-cache/hosted/pub.dartlang.org/flutter_plugin_android_lifecycle-2.0.7/
+geolocator=/home/madhu/.pub-cache/hosted/pub.dartlang.org/geolocator-9.0.1/
+geolocator_android=/home/madhu/.pub-cache/hosted/pub.dartlang.org/geolocator_android-4.1.1/
+geolocator_apple=/home/madhu/.pub-cache/hosted/pub.dartlang.org/geolocator_apple-2.2.1/
+geolocator_web=/home/madhu/.pub-cache/hosted/pub.dartlang.org/geolocator_web-2.1.6/
+geolocator_windows=/home/madhu/.pub-cache/hosted/pub.dartlang.org/geolocator_windows-0.1.1/
+permission_handler=/home/madhu/.pub-cache/hosted/pub.dartlang.org/permission_handler-10.0.0/
+permission_handler_android=/home/madhu/.pub-cache/hosted/pub.dartlang.org/permission_handler_android-10.0.0/
+permission_handler_apple=/home/madhu/.pub-cache/hosted/pub.dartlang.org/permission_handler_apple-9.0.4/
+permission_handler_windows=/home/madhu/.pub-cache/hosted/pub.dartlang.org/permission_handler_windows-0.1.0/
