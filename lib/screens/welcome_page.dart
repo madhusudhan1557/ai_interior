@@ -21,8 +21,8 @@ class _WelcomePageState extends State<WelcomePage> {
           Center(
             child: arg == 'en'
                 ? const Text("Welcome Page")
-                : arg == "ne"
-                    ? const Text("स्वागत छ")
+                : arg == "hi"
+                    ? const Text("स्वागत है")
                     : arg == 'ja'
                         ? const Text("いらっしゃいませ")
                         : const Text("Welcome"),
@@ -33,8 +33,8 @@ class _WelcomePageState extends State<WelcomePage> {
             },
             child: arg == 'en'
                 ? const Text("Start now")
-                : arg == "ne"
-                    ? const Text("सुरु गर्नुहोस्")
+                : arg == "hi"
+                    ? const Text("शुरू करें")
                     : arg == 'ja'
                         ? const Text("今すぐ開始")
                         : const Text("Welcome"),

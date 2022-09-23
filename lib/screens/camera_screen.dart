@@ -1,4 +1,3 @@
-import 'package:ai_interior/includes/get3d0bjects.dart';
 import 'package:ar_flutter_plugin/ar_flutter_plugin.dart';
 import 'package:ar_flutter_plugin/datatypes/config_planedetection.dart';
 import 'package:ar_flutter_plugin/datatypes/hittest_result_types.dart';
@@ -25,13 +24,69 @@ class _CameraScreenState extends State<CameraScreen> {
     return showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      builder: (_) => const Get3dObjects(),
+      builder: (_) => Container(
+        alignment: Alignment.topCenter,
+        margin: const EdgeInsets.only(top: 50),
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: GridView(
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            childAspectRatio: 6 / 8,
+            crossAxisSpacing: 10,
+            mainAxisSpacing: 10,
+          ),
+          children: [
+            InkWell(
+              onTap: () {
+                setState(() {
+                  selectChicken = true;
+                  selectChair = false;
+                });
+                Navigator.of(context).pop();
+              },
+              child: Card(
+                child: Center(
+                  child: Image.asset(
+                    "assets/images/chicken.png",
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+            ),
+            InkWell(
+              onTap: () {
+                setState(() {
+                  selectChicken = false;
+                  selectChair = true;
+                });
+                Navigator.of(context).pop();
+              },
+              child: Card(
+                child: Center(
+                  child: Image.asset(
+                    "assets/images/chair.png",
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 
   late ARSessionManager arSessionManager;
   late ARObjectManager arObjectManager;
   late ARAnchorManager arAnchorManager;
+
+  bool selectChicken = false;
+  bool selectChair = false;
+
+  List<String> uri = [
+    "assets/objects/Chicken_01.gltf",
+    "assets/objects/SheenChair.gltf"
+  ];
 
   List<ARNode> nodes = [];
   List<ARAnchor> anchors = [];
@@ -59,15 +114,17 @@ class _CameraScreenState extends State<CameraScreen> {
             children: [
               ElevatedButton(
                   style: ElevatedButton.styleFrom(shape: const CircleBorder()),
-                  onPressed: onRemoveEverything,
+                  onPressed: () => onRemoveEverything(),
                   child: const Icon(Icons.remove_circle)),
               ElevatedButton(
                   style: ElevatedButton.styleFrom(shape: const CircleBorder()),
-                  onPressed: onTakeScreenshot,
+                  onPressed: () => onTakeScreenshot(),
                   child: const Icon(Icons.screenshot)),
               ElevatedButton(
                   style: ElevatedButton.styleFrom(shape: const CircleBorder()),
-                  onPressed: onTakeScreenshot,
+                  onPressed: () {
+                    openModal();
+                  },
                   child: const Icon(Icons.add)),
             ],
           ),
@@ -88,8 +145,6 @@ class _CameraScreenState extends State<CameraScreen> {
     this.arSessionManager.onInitialize(
           showFeaturePoints: false,
           showPlanes: true,
-          customPlaneTexturePath: "Images/triangle.png",
-          showWorldOrigin: true,
           showAnimatedGuide: false,
         );
     this.arObjectManager.onInitialize();
@@ -99,14 +154,9 @@ class _CameraScreenState extends State<CameraScreen> {
   }
 
   Future<void> onRemoveEverything() async {
-    /*nodes.forEach((node) {
-      this.arObjectManager.removeNode(node);
-    });*/
-    // anchors.forEach((anchor)
     for (var anchor in anchors) {
       arAnchorManager.removeAnchor(anchor);
     }
-    ;
     anchors = [];
   }
 
@@ -134,8 +184,10 @@ class _CameraScreenState extends State<CameraScreen> {
     if (singleHitTestResult != null) {
       var newNode = ARNode(
           type: NodeType.localGLTF2,
-          uri: "assets/objects/Chicken_01.gltf",
-          scale: Vector3(0.2, 0.2, 0.2),
+          uri: selectChair == true ? uri[1] : uri[0],
+          scale: selectChair == true
+              ? Vector3(0.6, 0.8, 0.6)
+              : Vector3(0.2, 0.2, 0.2),
           transformation: singleHitTestResult.worldTransform);
       bool? didAddWebNode = await arObjectManager.addNode(newNode);
       if (didAddWebNode!) {
