@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:ar_flutter_plugin/ar_flutter_plugin.dart';
 import 'package:ar_flutter_plugin/datatypes/config_planedetection.dart';
 import 'package:ar_flutter_plugin/datatypes/hittest_result_types.dart';
@@ -79,7 +81,7 @@ class _CameraScreenState extends State<CameraScreen> {
   late ARSessionManager arSessionManager;
   late ARObjectManager arObjectManager;
   late ARAnchorManager arAnchorManager;
-
+  late ARNode newNode;
   bool selectChicken = false;
   bool selectChair = false;
 
@@ -146,6 +148,11 @@ class _CameraScreenState extends State<CameraScreen> {
           showFeaturePoints: false,
           showPlanes: true,
           showAnimatedGuide: false,
+          handleTaps: true,
+          showWorldOrigin: false,
+          handleRotation: true,
+          customPlaneTexturePath: selectChair == true ? uri[1] : uri[0],
+          handlePans: true,
         );
     this.arObjectManager.onInitialize();
 
@@ -174,7 +181,7 @@ class _CameraScreenState extends State<CameraScreen> {
 
   Future<void> onNodeTapped(List<String> nodes) async {
     var number = nodes.length;
-    arSessionManager.onError("Tapped $number node(s)");
+    log(number.toString());
   }
 
   Future<void> onPlaneOrPointTapped(
@@ -182,13 +189,15 @@ class _CameraScreenState extends State<CameraScreen> {
     var singleHitTestResult = hitTestResults.firstWhere(
         (hitTestResult) => hitTestResult?.type == ARHitTestResultType.plane);
     if (singleHitTestResult != null) {
-      var newNode = ARNode(
-          type: NodeType.localGLTF2,
-          uri: selectChair == true ? uri[1] : uri[0],
-          scale: selectChair == true
-              ? Vector3(0.6, 0.8, 0.6)
-              : Vector3(0.2, 0.2, 0.2),
-          transformation: singleHitTestResult.worldTransform);
+      newNode = ARNode(
+        type: NodeType.localGLTF2,
+        uri: selectChair == true ? uri[1] : uri[0],
+        scale: selectChair == true
+            ? Vector3(0.6, 0.8, 0.6)
+            : Vector3(0.2, 0.2, 0.2),
+        transformation: singleHitTestResult.worldTransform,
+      );
+
       bool? didAddWebNode = await arObjectManager.addNode(newNode);
       if (didAddWebNode!) {
         nodes.add(newNode);
