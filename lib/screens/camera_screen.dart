@@ -85,10 +85,10 @@ class _CameraScreenState extends State<CameraScreen> {
   bool selectChicken = false;
   bool selectChair = false;
 
-  List<String> uri = [
-    "assets/objects/Chicken_01.gltf",
-    "assets/objects/SheenChair.gltf"
-  ];
+  Map<String, dynamic> uri = {
+    "chicken": "assets/objects/Chicken_01.gltf",
+    "chair": "assets/objects/SheenChair.gltf"
+  };
 
   List<ARNode> nodes = [];
   List<ARAnchor> anchors = [];
@@ -116,10 +116,6 @@ class _CameraScreenState extends State<CameraScreen> {
             children: [
               ElevatedButton(
                   style: ElevatedButton.styleFrom(shape: const CircleBorder()),
-                  onPressed: () => onRemoveEverything(),
-                  child: const Icon(Icons.remove_circle)),
-              ElevatedButton(
-                  style: ElevatedButton.styleFrom(shape: const CircleBorder()),
                   onPressed: () => onTakeScreenshot(),
                   child: const Icon(Icons.screenshot)),
               ElevatedButton(
@@ -145,26 +141,18 @@ class _CameraScreenState extends State<CameraScreen> {
     this.arAnchorManager = arAnchorManager;
 
     this.arSessionManager.onInitialize(
-          showFeaturePoints: false,
+          showFeaturePoints: true,
           showPlanes: true,
           showAnimatedGuide: false,
           handleTaps: true,
           showWorldOrigin: false,
           handleRotation: true,
-          customPlaneTexturePath: selectChair == true ? uri[1] : uri[0],
-          handlePans: true,
         );
+
     this.arObjectManager.onInitialize();
 
     this.arSessionManager.onPlaneOrPointTap = onPlaneOrPointTapped;
     this.arObjectManager.onNodeTap = onNodeTapped;
-  }
-
-  Future<void> onRemoveEverything() async {
-    for (var anchor in anchors) {
-      arAnchorManager.removeAnchor(anchor);
-    }
-    anchors = [];
   }
 
   Future<void> onTakeScreenshot() async {
@@ -181,6 +169,7 @@ class _CameraScreenState extends State<CameraScreen> {
 
   Future<void> onNodeTapped(List<String> nodes) async {
     var number = nodes.length;
+
     log(number.toString());
   }
 
@@ -191,11 +180,12 @@ class _CameraScreenState extends State<CameraScreen> {
     if (singleHitTestResult != null) {
       newNode = ARNode(
         type: NodeType.localGLTF2,
-        uri: selectChair == true ? uri[1] : uri[0],
+        uri: selectChair == true ? uri['chair'] : uri["chicken"],
         scale: selectChair == true
             ? Vector3(0.6, 0.8, 0.6)
             : Vector3(0.2, 0.2, 0.2),
         transformation: singleHitTestResult.worldTransform,
+        data: uri,
       );
 
       bool? didAddWebNode = await arObjectManager.addNode(newNode);
